@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+:root {
+  --background: #05040f;
+  --foreground: #f4f2ff;
+  --card: #0d0c1d;
+  --card-elevated: #12112a;
+  /* ~4.5:1 on midnight bg for secondary copy */
+  --muted: #a8a3c4;
+  --accent: #8b5cf6;
+  --accent-soft: rgba(139, 92, 246, 0.18);
+  --glow: rgba(139, 92, 246, 0.45);
+  --glow-soft: rgba(99, 102, 241, 0.28);
+  --focus-ring: rgba(167, 139, 250, 0.9);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(167, 139, 250, 0.35);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  /* Prevent rubber-band horizontal scroll on iOS */
+  overflow-x: clip;
+}
+
+html,
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Skip link — visible on keyboard focus only */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  border-radius: 0.75rem;
+  background: #7c3aed;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.skip-link:focus {
+  top: calc(1rem + var(--safe-top));
+}
+
+/* ── Cosmic atmosphere ── */
+.stars {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 80px 120px, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px, rgba(199, 210, 254, 0.5), transparent),
+    radial-gradient(1px 1px at 240px 180px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 320px 40px, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 400px 140px, rgba(233, 213, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 480px 90px, rgba(255, 255, 255, 0.28), transparent),
+    radial-gradient(1px 1px at 560px 200px, rgba(255, 255, 255, 0.38), transparent),
+    radial-gradient(1px 1px at 640px 50px, rgba(199, 210, 254, 0.32), transparent),
+    radial-gradient(1.5px 1.5px at 720px 160px, rgba(255, 255, 255, 0.42), transparent),
+    radial-gradient(1px 1px at 100px 210px, rgba(196, 181, 253, 0.35), transparent),
+    radial-gradient(1px 1px at 350px 100px, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1.2px 1.2px at 520px 30px, rgba(233, 213, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 680px 220px, rgba(255, 255, 255, 0.3), transparent);
+  background-size: 780px 260px;
+  background-repeat: repeat;
+}
+
+.stars-drift {
+  animation: stars-drift 120s linear infinite;
+}
+
+.nebula-drift {
+  animation: nebula-drift 48s ease-in-out infinite alternate;
+}
+
+@keyframes stars-drift {
+  from { background-position: 0 0; }
+  to { background-position: 780px 260px; }
+}
+
+@keyframes nebula-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(3%, -2%, 0) scale(1.04); }
+}
+
+/* Glassmorphic surface used by cards / modals */
+.glass-card {
+  background:
+    linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      rgba(13, 12, 29, 0.88) 100%
+    );
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.06),
+    0 0 48px -16px var(--glow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-modal {
+  background: rgba(13, 12, 29, 0.92);
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.08),
+    0 24px 64px -12px rgba(0, 0, 0, 0.65),
+    0 0 40px -12px var(--glow-soft);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.modal-backdrop {
+  background: rgba(5, 4, 15, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Primary CTA restrained glow when enabled */
+.btn-glow:not(:disabled) {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 28px -4px rgba(139, 92, 246, 0.55);
+}
+.btn-glow:not(:disabled):hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 36px -2px rgba(168, 85, 247, 0.65);
+}
+.btn-glow:not(:disabled):active {
+  transform: scale(0.985);
+}
+
+/* Touch-friendly minimum target */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Amount input — Uniswap/CowSwap quality scale */
+.amount-input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
+  line-height: 1.2;
+  font-weight: 600;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  color: white;
+  outline: none;
+}
+.amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+/* Direction switch press feedback */
+.dir-switch {
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.dir-switch:hover {
+  border-color: rgba(167, 139, 250, 0.45);
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+.dir-switch:active {
+  transform: scale(0.92) rotate(180deg);
+}
+
+/* Segmented privacy control indicator */
+.segment-thumb {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* RainbowKit tweaks to blend with midnight theme */
+[data-rk] {
+  --rk-colors-modalBackground: #0d0c1d !important;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Number input spin buttons */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Prefer less motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .stars-drift,
+  .nebula-drift {
+    animation: none !important;
+  }
+  .dir-switch:active {
+    transform: none;
+  }
+}
+
+/* Prevent long addresses / hashes from blowing mobile layout */
+.break-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Contain glow/blur overflow on narrow screens */
+.contain-glow {
+  overflow: hidden;
+  isolation: isolate;
+}
